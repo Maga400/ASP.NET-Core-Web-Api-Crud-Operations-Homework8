@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Web_Api_Crud_Operations_Homework8.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -33,6 +33,37 @@ namespace ASP.NET_Core_Web_Api_Crud_Operations_Homework8.Controllers
             return productDtos;
         }
 
+        //Products/GetHigher
+        [HttpGet("HigherPrice")]
+        public async Task<ProductDto> GetHigherPrice()
+        {
+            var products = await _productService.GetAllAsync();
+            var higherProduct = products.OrderByDescending(p => p.Price).FirstOrDefault();
+            var productDto = new ProductDto
+            {
+                Id = higherProduct!.Id,
+                Name = higherProduct.Name,
+                Price = higherProduct.Price,
+                Discount = higherProduct.Discount,
+            };
+            return productDto;
+        }
+
+        [HttpGet("HigherDiscount")]
+        public async Task<ProductDto> GetHigherDiscount()
+        {
+            var products = await _productService.GetAllAsync();
+            var higherProduct = products.OrderByDescending(p => p.Discount).FirstOrDefault();
+            var productDto = new ProductDto
+            {
+                Id = higherProduct!.Id,
+                Name = higherProduct.Name,
+                Price = higherProduct.Price,
+                Discount = higherProduct.Discount,
+            };
+            return productDto;
+        }
+
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -56,6 +87,16 @@ namespace ASP.NET_Core_Web_Api_Crud_Operations_Homework8.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProductExtendedDto value)
         {
+            if(value.Price <= 0) 
+            {
+                return BadRequest("Minimum Price should be 1");
+            }
+
+            if (value.Discount <= 0)
+            {
+                return BadRequest("Minimum Discount should be 1");
+            }
+
             var product = new Product
             {
                 Name = value.Name,
@@ -72,7 +113,18 @@ namespace ASP.NET_Core_Web_Api_Crud_Operations_Homework8.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] ProductExtendedDto value)
         {
             var product = await _productService.GetByIdAsync(id);
-            if(product != null) 
+
+            if (value.Price <= 0)
+            {
+                return BadRequest("Minimum Price should be 1");
+            }
+
+            if (value.Discount <= 0)
+            {
+                return BadRequest("Minimum Discount should be 1");
+            }
+
+            if (product != null) 
             {
                 product.Name = value.Name;
                 product.Price = value.Price;

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Web_Api_Crud_Operations_Homework8.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase
     {

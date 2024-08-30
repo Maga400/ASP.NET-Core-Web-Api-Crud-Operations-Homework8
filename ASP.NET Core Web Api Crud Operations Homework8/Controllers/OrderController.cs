@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Web_Api_Crud_Operations_Homework8.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -30,9 +30,9 @@ namespace ASP.NET_Core_Web_Api_Crud_Operations_Homework8.Controllers
             var orderDtos = orders.Select(o => new OrderDto
             {
                 Id = o.Id,
+                OrderDate = o.OrderDate,
                 CustomerId = o.CustomerId,
                 ProductId = o.ProductId,
-                OrderDate = o.OrderDate,
             });
             return orderDtos;
         }
@@ -47,9 +47,9 @@ namespace ASP.NET_Core_Web_Api_Crud_Operations_Homework8.Controllers
                 var orderDto = new OrderDto
                 {
                     Id = order.Id,
+                    OrderDate = order.OrderDate,
                     CustomerId = order.CustomerId,
                     ProductId = order.ProductId,
-                    OrderDate = order.OrderDate,
                 };
                 return Ok(orderDto);
             }
