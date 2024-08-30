@@ -83,6 +83,7 @@ namespace ASP.NET_Core_Web_Api_Crud_Operations_Homework8.Controllers
             return NotFound();
         }
 
+
         // POST api/<ProductController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProductExtendedDto value)
